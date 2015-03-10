@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Update App</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" ></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+
+        <form method="post" class="text-center">
+            <input id="objectsInp" type="hidden" name="objects" style=""/>
+            <input id="routesInp" type="hidden" name="routes" style=""/>
+            <input id="viewsInp" type="hidden" name="views" style=""/>
+            <input id="actionsInp" type="hidden" name="actions" style=""/>
+            <input id="submitButton" type="submit" value="Update App" class="btn btn-primary">
+            Reset Database? <input type="checkbox" name="force">
+            </form>
+
+    <div style="overflow: auto;">
+        <div class="col-xs-6">
+            <h2>Objects</h2>
+            <div id="objects" style="height: 500px">{{{objects}}}</div>
+        </div>
+        <div class="col-xs-6">
+            <h2>Routes</h2>
+            <div id="routes" style="height: 500px">{{{routes}}}</div>
+        </div>
+    </div>
+    <br>
+    <div style="overflow: auto;">
+        <div class="col-xs-6">
+            <h2>Views</h2>
+            <div id="views" style="height: 500px">{{{views}}}</div>
+        </div>
+        <div class="col-xs-6">
+            <h2>Actions</h2>
+            <div id="actions" style="height: 500px">{{{actions}}}</div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.8/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        var objects = ace.edit("objects");
+        objects.setTheme("ace/theme/monokai");
+        objects.getSession().setMode("ace/mode/yaml");
+        
+        var routes = ace.edit("routes");
+        routes.setTheme("ace/theme/monokai");
+        routes.getSession().setMode("ace/mode/yaml");
+
+        var views = ace.edit("views");
+        views.setTheme("ace/theme/monokai");
+        views.getSession().setMode("ace/mode/jade");
+        
+        var actions = ace.edit("actions");
+        actions.setTheme("ace/theme/monokai");
+        actions.getSession().setMode("ace/mode/yaml");
+
+        $('#submitButton').click(function() {
+         $('#objectsInp').val(objects.getSession().getValue());
+         $('#routesInp').val(routes.getSession().getValue());
+         $('#viewsInp').val(views.getSession().getValue());
+         $('#actionsInp').val(actions.getSession().getValue());
+        })
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+extends ./small-layout.jade
+
+block content
+  - var content_classes = []
+  
+  mixin header(title, color)
+    - content_classes.push("has-header")
+    div.bar.bar-header(class!="bar-"+color)
+      h1.title= title
+  
+  mixin footer(title, color)
+    - content_classes.push("has-footer")
+    div.bar.bar-footer(class!="bar-"+color)
+      div.title= title
+  
+  mixin button(content, color, icon)
+    button.button(class!="button-"+color)
+      if icon
+        if icon.place == 'right'
+          if content
+            = " "+content
+            i.icon.padding-left(class!="ion-"+icon.icon)
+          else
+            i.icon(class!="ion-"+icon.icon)
+        else
+          if content
+            i.icon.padding-right(class!="ion-"+icon.icon)
+            = " "+content
+          else
+            i.icon(class!="ion-"+icon.icon)
+      else
+        = content
+
+  mixin list
+    ul.list
+      block
+
+  mixin item(icon, button)
+    - var icons = icon ? " item-icon-"+icon.place : ""
+    - var buttons = button ? " item-button-"+button.place : ""
+    li.item(class!= icons+buttons)
+      if icon
+        if icon.place == 'right'
+          block
+          i.icon.padding-left(class!="ion-"+icon.icon)
+        else
+          i.icon.padding-right(class!="ion-"+icon.icon)
+          block
+      else
+        block
+  
+  +header('This is a header!', 'positive')
+  
+  div.content.padding(class!=content_classes.join(" "))
+    p
+      +button('hey', 'energized')
+    p
+      +button('hey', 'dark', {icon: "home", place: "right"})
+    p hello
+    +list
+      +item(false, {place: 'right'})
+        | Samir Menon
+        +button(false, 'balanced', {icon: "ios7-telephone", place: "left"})
+      +item Joe Bob
+      +item({icon: 'email', place: 'left'}) Suzie Smith
+    p hey
+
+  +footer('This is a footer!', 'royal')

@@ -1,0 +1,41 @@
+mixin view(url, title)
+  script(type="text/ng-template" id!=url+".html")
+    ion-view(title=title)
+      ion-content(padding="true")
+        block
+
+mixin form
+  .list&attributes(attributes)
+    label.item.assertive.text-center(ng-if="message") {{message}}
+    block
+
+mixin form-input(label)
+  label.item.item-input
+    if label
+      span.input-label= label
+    block
+
+mixin form-button(action)
+  .item
+    button.button.button-block.button-positive(ng-click=action)
+      block
+
+mixin list(norefresh)
+  unless norefresh
+    ion-refresher(pulling-text="Pull to refresh..." on-refresh="list()")
+  ion-list
+    block
+
+mixin item
+  ion-item&attributes(attributes)
+    block
+
+mixin tabs
+  script(type="text/ng-template" id!="tabs.html")
+    ion-tabs.tabs-icon-top.tabs-positive
+      block
+
+mixin tab(name, icon)
+  - var capitalized = name.charAt(0).toUpperCase() + name.slice(1);
+  ion-tab(title!=capitalized icon!=icon ui-sref!='tabs.'+name)
+    ion-nav-view(name!=name+"-tab")

@@ -1,0 +1,113 @@
+User:
+  email:
+    type: text
+    validate:
+      isEmail: true
+  password:
+    type: text
+    validate:
+      len:[8, 100]
+  name:
+    type: text
+    validate:
+      len: [2,50]
+  gender:
+    type: choice
+    values: [male, female, other]
+Hug:
+  message:
+    type: text
+    validate:
+      len: [1,160]
+
+
+user:
+  read:
+    attributes: [name, gender]
+  list:
+    attributes: [name, gender]
+hug:
+  create:
+    before:
+      set:
+        sender: me
+  read:
+    where:
+      recipient: me
+    include:
+      - as: sender
+        model: User
+        attributes: [name, gender]
+  list:
+    where:
+      recipient: me
+    include:
+      - as: sender
+        model: User
+        attributes: [name, gender]
+
+include ./blocks.jade
+
++view("login", "Login to R")
+  h2 Hi!
+  +form.card
+      +form-input
+        input(type="email" placeholder="Email" ng-model="user.email")
+      +form-input
+        input(type="password" placeholder="Password" ng-model="user.password")
+      +form-button("login()") Login
+  .card
+    .item
+        em Don't have an account?
+        button.button.button-block(ui-sref="signup") Sign Up!
+
++view("signup", "Sign Up")
+  +form
+    +form-input("Email")
+      input(type="email" placeholder="Email" ng-model="user.email")
+    +form-input('Password')
+      input(type="password" placeholder="Password" ng-model="user.password")
+    +form-input('Name')
+      input(type="text" placeholder="Display Name" ng-model="user.name")
+    +form-input('Gender').item-select
+      select(ng-model="user.gender")
+        option(value="male") Male
+        option(value="female") Female
+        option(value="other") Other
+    +form-button('signup()') Sign Up
+
++tabs
+  +tab('hugs', 'ion-heart')
+  +tab('users', 'ion-person')
+
++view("hugs","Get Hugs!")
+  +list
+    +item(ng-repeat="hug in data")
+      h2 {{hug.sender.name}} / {{offer.sender.gender}}
+      p {{hug.message}}
+
++view("users","Give Hugs!")
+  +list
+    +item(ng-repeat="user in data" ui-sref="tabs.users.detail({userId: user.id})")
+      h2 {{user.name}}
+      p {{user.gender}}
+
++view("user","{{obj.name}}")
+  +form(ng-if="!created" ng-init="hug.recipientId = userId")
+    +form-input("Hug")
+      input(type="text" placeholder="You're wonderful." ng-model="hug.message")
+    +form-button("create(hug)") Hug!
+  p(ng-if="created") You hugged!  :D
+
+
+'tabs.hugs':
+  - action: "list"
+    type: "Hug"
+'tabs.users.index':
+  - action: "list"
+    type: "User"
+'tabs.users.detail': 
+  - action: "view"
+    type: "User"
+  - action: "create"
+    type: "Hug"

@@ -1,0 +1,30 @@
+extends ./small-layout.jade
+
+mixin header(title, color)
+  div.bar.bar-header(class!="bar-"+color)
+    h1.title= title
+
+block content
+  +header('This is a title!', 'positive')
+  form(method='POST', action="/create")
+    label Title
+      input(type="text", name="title")
+    label Byline
+      input(type="text", name="subheader")
+    label Category
+      select(name="category")
+        option(value='App') App
+        option(value='Hardware') Hardware
+    label Bullets
+      ul
+        li 
+          input(type="text", name="bullets[0]")
+        li 
+          input(type="text", name="bullets[1]")
+        li 
+          input(type="text", name="bullets[2]")
+
+    input(type="submit", value="Post").button
+
+block title
+  title StartupIdeas: Post an Idea

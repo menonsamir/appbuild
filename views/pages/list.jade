@@ -1,0 +1,17 @@
+extends ./small-layout.jade
+
+block content
+  - var colorMap = {"Hardware": "warning", "App": "success"}
+
+  each idea in ideas
+    div(style={border: '1px solid #999', margin:"5px", padding:"8px"}).idea
+      h3 #{idea.title} 
+        span.label.right(class=colorMap[idea.category]) #{idea.category} 
+      h5.subheader
+        | #{idea.subheader} 
+      ul
+        each bullet in idea.bullets
+          li #{bullet}
+
+block title
+  title StartupIdeas: Ideas

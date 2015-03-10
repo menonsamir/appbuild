@@ -1,0 +1,25 @@
+
+<script type="text/ng-template" id="{{obj.name}}.html">
+  <ion-view>
+    <ion-content padding="true">
+      <p>{{obj.name}} / {{obj.type}} / wants to {{obj.wants}}</p>
+      <div class="list" ng-if="!created" ng-init="offer.recipientId = userId">
+        <label ng-if="message" class="item assertive text-center">{{message}}</label>
+        <label class="item item-input"><span class="input-label">Offer</span>
+          <input type="text" placeholder="Wanna hang at my place?" ng-model="offer.title"/>
+        </label>
+        <label class="item item-input"><span class="input-label">I will...</span>
+          <select ng-model="offer.for">
+            <option value="give">Give</option>
+            <option value="recieve">Recieve</option>
+            <option value="both">Do Both</option>
+          </select>
+        </label>
+        <div class="item">
+          <button ng-click="create(offer)" class="button button-block button-positive">Sign up
+          </button>
+        </div>
+      </div>
+    </ion-content>
+  </ion-view>
+</script>

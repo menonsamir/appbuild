@@ -1,0 +1,15 @@
+
+<script type="text/ng-template" id="Home.html">
+  <ion-view>
+    <ion-content padding="true">
+      <ion-refresher pulling-text="Pull to refresh..." on-refresh="list()"></ion-refresher>
+      <ion-list>
+        <ion-item ng-repeat="offer in data">
+          <h2>{{offer.sender.name}}</h2>
+          <p>{{offer.sender.type}} / {{offer.for}}</p>
+          <p>{{offer.title}}</p>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-view>
+</script>

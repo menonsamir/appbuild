@@ -1,0 +1,15 @@
+extends ./small-layout.jade
+
+- var colorMap = {"Hardware": "warning", "App": "success"}
+
+block content
+  div(style={border: '1px solid #999', margin:"5px", padding:"8px"})
+    h3(contenteditable, data-name="title") Title
+      span.label.right(contenteditable) Category
+    h5.subheader(contenteditable)
+      | Byline
+    ul
+      li(contenteditable, data-name="bullet[0]") Bullet
+      li(contenteditable, data-name="bullet[1]") Bullet
+      li(contenteditable, data-name="bullet[2]") Bullet
+

@@ -1,0 +1,13 @@
+include ./blocks.jade
+
++view("login")
+  +form.card
+      +form-input
+        input(type="email" placeholder="Email" ng-model="user.email")
+      +form-input
+        input(type="password" placeholder="Password" ng-model="user.password")
+      +form-button("login()") Login
+  .card
+    .item
+        em Don't have an account?
+        button.button.button-block(ui-sref="signup") Sign Up!

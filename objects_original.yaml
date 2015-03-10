@@ -1,0 +1,27 @@
+User:
+  email:
+    type: text
+    validate:
+      isEmail: true
+  password:
+    type: text
+    validate:
+      len:[8, 100]
+  name:
+    type: text
+    validate:
+      len: [2,50]
+  type:
+    type: choice
+    values: [skinny, toned, average, muscular, chubby, large]
+  wants:
+    type: choice
+    values: [give, recieve, both]
+Offer:
+  title:
+    type: text
+    validate:
+      len: [1,160]
+  for:
+    type: choice
+    values: [give, recieve, both]

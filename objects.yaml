@@ -1,0 +1,21 @@
+User:
+  email:
+    type: text
+    validate:
+      isEmail: true
+  password:
+    type: text
+    validate:
+      len:[8, 100]
+  name:
+    type: text
+    validate:
+      len: [2,50]
+  gender:
+    type: choice
+    values: [male, female, other]
+Hug:
+  message:
+    type: text
+    validate:
+      len: [1,160]

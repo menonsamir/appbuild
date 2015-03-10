@@ -1,0 +1,11 @@
+'tabs.hugs':
+  - action: "list"
+    type: "Hug"
+'tabs.users.index':
+  - action: "list"
+    type: "User"
+'tabs.users.detail': 
+  - action: "view"
+    type: "User"
+  - action: "create"
+    type: "Hug"

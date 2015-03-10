@@ -1,0 +1,24 @@
+user:
+  read:
+    attributes: [name, type, wants]
+  list:
+    attributes: [name, type, wants]
+offer:
+  create:
+    before:
+      set:
+        sender: me
+  read:
+    where:
+      recipient: me
+    include:
+      - as: sender
+        model: User
+        attributes: [name, type, wants]
+  list:
+    where:
+      recipient: me
+    include:
+      - as: sender
+        model: User
+        attributes: [name, type, wants]

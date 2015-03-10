@@ -1,0 +1,11 @@
+'tabs.home':
+  - action: "list"
+    type: "Offer"
+'tabs.users.index':
+  - action: "list"
+    type: "User"
+'tabs.users.detail': 
+  - action: "view"
+    type: "User"
+  - action: "create"
+    type: "Offer"

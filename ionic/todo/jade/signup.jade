@@ -1,0 +1,25 @@
+include ./blocks.jade
+
++view("Sign Up")
+  +form
+    +form-input("Email")
+      input(type="email" placeholder="Email" ng-model="user.email")
+    +form-input('Password')
+      input(type="password" placeholder="Password" ng-model="user.password")
+    +form-input('Username')
+      input(type="text" placeholder="Display Name" ng-model="user.name")
+    +form-input('Type').item-select
+      select(ng-model="user.type")
+        option(value="skinny") Skinny
+        option(value="toned") Toned
+        option(value="average") Average
+        option(value="muscular") Muscular
+        option(value="chubby") Chubby
+        option(value="large") Large
+    +form-input('I want to...').item-select
+      select(ng-model="user.wants")
+        option(value="give") Give
+        option(value="recieve") Recieve
+        option(value="both") Both
+    +form-button('signup()') Sign Up
+    p {{user}}

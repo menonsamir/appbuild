@@ -1,0 +1,8 @@
+include ./blocks.jade
+
++view("Home")
+  +list
+    +item(ng-repeat="offer in data")
+      h2 {{offer.sender.name}}
+      p {{offer.sender.type}} / {{offer.for}}
+      p {{offer.title}}

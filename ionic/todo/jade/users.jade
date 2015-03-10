@@ -1,0 +1,7 @@
+include ./blocks.jade
+
++view("Users")
+  +list
+    +item(ng-repeat="user in data" ui-sref="tabs.users.detail({userId: user.id})")
+      h2 {{user.name}}
+      p {{user.type}} / wants to {{user.wants}}

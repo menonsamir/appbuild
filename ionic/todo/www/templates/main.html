@@ -1,0 +1,108 @@
+
+<script type="text/ng-template" id="login.html">
+  <ion-view title="Login to R">
+    <ion-content padding="true">
+      <h2>Hi!</h2>
+      <div class="list card">
+        <label ng-if="message" class="item assertive text-center">{{message}}</label>
+        <label class="item item-input">
+          <input type="email" placeholder="Email" ng-model="user.email"/>
+        </label>
+        <label class="item item-input">
+          <input type="password" placeholder="Password" ng-model="user.password"/>
+        </label>
+        <div class="item">
+          <button ng-click="login()" class="button button-block button-positive">Login
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="item"><em>Don't have an account?</em>
+          <button ui-sref="signup" class="button button-block">Sign Up!</button>
+        </div>
+      </div>
+    </ion-content>
+  </ion-view>
+</script>
+<script type="text/ng-template" id="signup.html">
+  <ion-view title="Sign Up">
+    <ion-content padding="true">
+      <div class="list">
+        <label ng-if="message" class="item assertive text-center">{{message}}</label>
+        <label class="item item-input"><span class="input-label">Email</span>
+          <input type="email" placeholder="Email" ng-model="user.email"/>
+        </label>
+        <label class="item item-input"><span class="input-label">Password</span>
+          <input type="password" placeholder="Password" ng-model="user.password"/>
+        </label>
+        <label class="item item-input"><span class="input-label">Name</span>
+          <input type="text" placeholder="Display Name" ng-model="user.name"/>
+        </label>
+        <label class="item item-input"><span class="input-label">Gender</span>
+          <select ng-model="user.gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <div class="item">
+          <button ng-click="signup()" class="button button-block button-positive">Sign Up
+          </button>
+        </div>
+      </div>
+    </ion-content>
+  </ion-view>
+</script>
+<script type="text/ng-template" id="tabs.html">
+  <ion-tabs class="tabs-icon-top tabs-positive">
+    <ion-tab title="Hugs" icon="ion-heart" ui-sref="tabs.hugs">
+      <ion-nav-view name="hugs-tab"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="Users" icon="ion-person" ui-sref="tabs.users">
+      <ion-nav-view name="users-tab"></ion-nav-view>
+    </ion-tab>
+  </ion-tabs>
+</script>
+<script type="text/ng-template" id="hugs.html">
+  <ion-view title="Get Hugs!">
+    <ion-content padding="true">
+      <ion-refresher pulling-text="Pull to refresh..." on-refresh="list()"></ion-refresher>
+      <ion-list>
+        <ion-item ng-repeat="hug in data">
+          <h2>{{hug.sender.name}} / {{hug.sender.gender}}</h2>
+          <p>{{hug.message}}</p>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-view>
+</script>
+<script type="text/ng-template" id="users.html">
+  <ion-view title="Give Hugs!">
+    <ion-content padding="true">
+      <ion-refresher pulling-text="Pull to refresh..." on-refresh="list()"></ion-refresher>
+      <ion-list>
+        <ion-item ng-repeat="user in data" ui-sref="tabs.users.detail({userId: user.id})">
+          <h2>{{user.name}}</h2>
+          <p>{{user.gender}}</p>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-view>
+</script>
+<script type="text/ng-template" id="user.html">
+  <ion-view title="{{obj.name}}">
+    <ion-content padding="true">
+      <div class="list" ng-if="!created" ng-init="hug.recipientId = userId">
+        <label ng-if="message" class="item assertive text-center">{{message}}</label>
+        <label class="item item-input"><span class="input-label">Hug</span>
+          <input type="text" placeholder="You're wonderful." ng-model="hug.message"/>
+        </label>
+        <div class="item">
+          <button ng-click="create(hug)" class="button button-block button-positive">Hug!
+          </button>
+        </div>
+      </div>
+      <p ng-if="created">You hugged!  :D</p>
+    </ion-content>
+  </ion-view>
+</script>

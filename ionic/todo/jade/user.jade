@@ -1,0 +1,13 @@
+include ./blocks.jade
+
++view("{{obj.name}}")
+  p {{obj.name}} / {{obj.type}} / wants to {{obj.wants}}
+  +form(ng-if="!created" ng-init="offer.recipientId = userId")
+    +form-input("Offer")
+      input(type="text" placeholder="Wanna hang at my place?" ng-model="offer.title")
+    +form-input("I will...").item-select
+      select(ng-model="offer.for")
+        option(value="give") Give
+        option(value="recieve") Recieve
+        option(value="both") Do Both
+    +form-button("create(offer)") Sign up
