@@ -1,5 +1,7 @@
-yaml = require('js-yaml');
-fs   = require('fs');
+var yaml = require('js-yaml');
+var fs   = require('fs');
+
+var inflection = require('inflection');
 
 try {
   var conf = yaml.safeLoad(fs.readFileSync('./routes.yaml', 'utf8'));
@@ -22,10 +24,18 @@ var type_mapper = {
   'enum': 'ENUM'
 }
 
+var relationships = [];
+
 for (var obj in objs_spec) {
   var spec = objs_spec[obj];
+  var toRemove = {};
   for (var prop in spec) {
-    spec[prop].type = Sequelize[type_mapper[spec[prop].type]];
+    if (type_mapper.hasOwnProperty(spec[prop].type)) {
+      spec[prop].type = Sequelize[type_mapper[spec[prop].type]];
+    } else {
+      relationships.push({"owner": spec[prop].type, "owned": obj, "propertyName": prop});
+      delete spec[prop];
+    }
   }
   sequelize.define(obj, spec);
 }
@@ -83,9 +93,15 @@ var Offer = sequelize.define('Offer', {
 });
 */
 
+console.log(relationships);
 
-sequelize.models.Hug.belongsTo(sequelize.models.User, {as: "sender"});
-sequelize.models.Hug.belongsTo(sequelize.models.User, {as: "recipient"});
+for(var i=0; i<relationships.length; i++) {
+  var relation = relationships[i];
+  sequelize.models[relation.owned].belongsTo(sequelize.models[relation.owner], {as: relation.propertyName});
+}
+
+//sequelize.models.Hug.belongsTo(sequelize.models.User, {as: "sender"});
+//sequelize.models.Hug.belongsTo(sequelize.models.User, {as: "recipient"});
 
 
 for (var m in sequelize.models) {
@@ -264,12 +280,42 @@ function genList(objName, config) {
   })(objName, config);
 }
 
+var actionMapper = {
+  'create': genCreate,
+  'list': genList,
+  'read': genRead
+}
+
+var httpMethodMapper = {
+  'create': 'post',
+  'list': 'get',
+  'read': 'get',
+  'update': 'put'
+}
+
+for (var objName in conf) {
+  var obj = conf[objName];
+  for (var actionName in obj) {
+    var action = obj[actionName];
+    var actionFunction = actionMapper[actionName];
+    var httpMethod = httpMethodMapper[actionName];
+    var url = '/api/'+ inflection.pluralize(objName.toLowerCase()) + ((actionName == 'read') ? '/:id' : '');
+
+    //  replaces this:
+    //  app.get('/api/hugs', genList('Hug', conf.hug.list));
+    app[httpMethod](url, actionFunction(objName, action));
+  }
+}
+
+/*
 app.get('/api/hugs', genList('Hug', conf.hug.list));
 app.post('/api/hugs', genCreate('Hug', conf.hug.create));
 app.get('/api/hugs/:id', genRead('Hug', conf.hug.read));
 app.get('/api/users', genList('User', conf.user.list));
 app.get('/api/users/:id', genRead('User', conf.user.read));
+*/
 
+console.log("Backend started on :3400")
 
 app.listen(3400);
 

@@ -19,3 +19,7 @@ Hug:
     type: text
     validate:
       len: [1,160]
+  sender:
+    type: User
+  recipient:
+    type: User

@@ -1,9 +1,9 @@
-user:
+User:
   read:
     attributes: [name, gender]
   list:
     attributes: [name, gender]
-hug:
+Hug:
   create:
     before:
       set:

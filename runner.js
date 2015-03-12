@@ -19,6 +19,9 @@ app.use(express.static(__dirname + '/public'));
 var backend = spawn("node", ["backend.js"]);
 backend.stdout.on('data', function(data) { console.log(""+data); });
 
+var frontend = spawn("ionic", ["serve", "-b"], {'cwd': 'ionic/todo'});
+frontend.stdout.on('data', function(data) { console.log(""+data); });
+
 var gulp = spawn("gulp", ["watch", "--cwd","ionic/todo"]);
 gulp.stdout.on('data', function(data) { console.log(""+data); });
 
@@ -35,6 +38,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/reset', function (req, res) {
+    // TODO: FIX THIS TO ACCOUNT FOR VIEWS AND ACTIONS
   fs.readFile('objects_original.yaml', {encoding: 'utf8'}, function (err, objects) {
     fs.readFile('routes_original.yaml', {encoding: 'utf8'}, function (err, routes) {
       fs.writeFile('objects.yaml', objects, function (err) {
@@ -48,7 +52,6 @@ app.get('/reset', function (req, res) {
 
 app.post('/', function (req, res) {
   console.log(req.body);
-  // TODO: FIX THIS TO ACCOUNT FOR VIEWS AND ACTIONS
   fs.writeFile('objects.yaml', req.body.objects, function (err) {
     fs.writeFile('routes.yaml', req.body.routes, function (err) {
       fs.writeFile('ionic/todo/jade/main.jade', req.body.views, function (err) {

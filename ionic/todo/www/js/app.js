@@ -1,5 +1,6 @@
 var objects = ['Hug', 'User'];
-var root = 'http://127.0.0.1:3400/api/';
+var root = window.location.protocol + '//' + window.location.hostname + ":3400";
+var apiroot = root+'/api/';
 
 var actions = {};
 var tabs = {'hugs': 'basic', 'users':'list'};
@@ -120,7 +121,7 @@ for (var i = 0; i<objects.length; i++) {
   console.log(obj.toLowerCase().pluralize()+'/:id')
   app.factory(obj, (function (obj) {
     return function($resource) {
-      return $resource(root+obj.toLowerCase().pluralize()+'/:id');
+      return $resource(apiroot+obj.toLowerCase().pluralize()+'/:id');
     }
   })(obj))
 }
@@ -241,7 +242,7 @@ app.controller('LoginCtrl', function($scope, $http, $window, $state) {
   $scope.user = {email: '', password: ''};
   $scope.login = function() {
     $http
-          .post('http://127.0.0.1:3400/authenticate', $scope.user)
+          .post(root+'/authenticate', $scope.user)
           .success(function (data, status, headers, config) {
             $window.sessionStorage.token = data.token;
             $state.go('tabs.hugs');
@@ -261,7 +262,7 @@ app.controller('SignupCtrl', function($scope, $http, $window, $state) {
   $scope.signup = function() {
     console.log($scope);
     $http
-          .post('http://127.0.0.1:3400/register', $scope.user)
+          .post(root+'/register', $scope.user)
           .success(function (data, status, headers, config) {
             $window.sessionStorage.token = data.token;
             $state.go('tabs.hugs');
