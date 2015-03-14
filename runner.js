@@ -19,7 +19,7 @@ app.use(express.static(__dirname + '/public'));
 var backend = spawn("node", ["backend.js"]);
 backend.stdout.on('data', function(data) { console.log(""+data); });
 
-var frontend = spawn("ionic", ["serve", "-b"], {'cwd': 'ionic/todo'});
+var frontend = spawn("../../node_modules/ionic/bin/ionic", ["serve", "-b"], {'cwd': 'ionic/todo'});
 frontend.stdout.on('data', function(data) { console.log(""+data); });
 
 var gulp = spawn("gulp", ["watch", "--cwd","ionic/todo"]);
