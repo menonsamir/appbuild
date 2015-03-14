@@ -19,7 +19,7 @@ app.use(express.static(__dirname + '/public'));
 var backend = spawn("node", ["backend.js"]);
 backend.stdout.on('data', function(data) { console.log(""+data); });
 
-var frontend = spawn("../../node_modules/ionic/bin/ionic", ["serve", "-b"], {'cwd': 'ionic/todo'});
+var frontend = spawn("../../node_modules/ionic/bin/ionic", ["serve", "--address", "$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')"], {'cwd': 'ionic/todo'});
 frontend.stdout.on('data', function(data) { console.log(""+data); });
 
 var gulp = spawn("gulp", ["watch", "--cwd","ionic/todo"]);
