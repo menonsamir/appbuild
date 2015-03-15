@@ -9,12 +9,13 @@ try {
   console.log(e);
 }
 
+console.log(process.env.DATABASE_SECURE == "false" ? false : true)
+
 var Sequelize = require('sequelize');
 
-var sequelize = new Sequelize('main', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql',
-});
+var match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
+console.log(process.env.DATABASE_URL);
+var sequelize = new Sequelize(process.env.DATABASE_URL);
 
 var objs_spec = yaml.safeLoad(fs.readFileSync('./objects.yaml', 'utf8'));
 var type_mapper = {
@@ -27,6 +28,7 @@ var type_mapper = {
 var relationships = [];
 
 for (var obj in objs_spec) {
+  
   var spec = objs_spec[obj];
   var toRemove = {};
   for (var prop in spec) {
@@ -44,6 +46,7 @@ for (var obj in objs_spec) {
 var force = false;
 if (process.argv[2] === "true") {
   force = true;
+  console.log("Forcing!")
 }
 
 /*
@@ -93,20 +96,22 @@ var Offer = sequelize.define('Offer', {
 });
 */
 
+console.log("------")
 console.log(relationships);
 
-for(var i=0; i<relationships.length; i++) {
-  var relation = relationships[i];
-  sequelize.models[relation.owned].belongsTo(sequelize.models[relation.owner], {as: relation.propertyName});
-}
+sequelize.sync({force: force}).then(function () {
+  for(var i=0; i<relationships.length; i++) {
+    var relation = relationships[i];
+    sequelize.models[relation.owned].belongsTo(sequelize.models[relation.owner], {as: relation.propertyName});
+  }
+  sequelize.sync({force: force});
+});
+
+
 
 //sequelize.models.Hug.belongsTo(sequelize.models.User, {as: "sender"});
 //sequelize.models.Hug.belongsTo(sequelize.models.User, {as: "recipient"});
 
-
-for (var m in sequelize.models) {
-  sequelize.models[m].sync({force: force});
-}
 /*.then(function () {
   User.create({email: "joe@gmail.com", password: "foobarfoobar"}).then(function (user) {
     Person.create({name: 'Joe', type: 'toned', wants: 'give'}).then(function (person) { 
