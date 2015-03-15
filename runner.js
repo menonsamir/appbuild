@@ -22,7 +22,7 @@ backend.stdout.on('data', function(data) { console.log(""+data); });
 var port = process.env.PORT;
 var address = "$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')";
 console.log("../../node_modules/ionic/bin/ionic serve -b --port " + port + " --address " + address)
-  var frontend = spawn("ionic", ["serve", "-b", "--port", "8100", "--address", "localhost"], {'cwd': 'ionic/todo'});
+  var frontend = spawn("ionic", ["serve", "-b", "--port", port, "--address", "localhost"], {'cwd': 'ionic/todo'});
 //var frontend = spawn("../../node_modules/ionic/bin/ionic", ["serve", "-b", "--port", port, "--address", address], {'cwd': 'ionic/todo'});
 frontend.stdout.on('data', function(data) { console.log(""+data); });
 
