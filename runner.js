@@ -24,8 +24,9 @@ backend.stdout.on('data', function(data) { console.log(""+data); });
 var port = (process.env.PORT || 8100);
 var address = "localhost";
 if (port !== 8100) {
-  address = process.env.IP;
   execSync('export IP=\"$(ip addr | grep \'state UP\' -A2 | tail -n1 | awk \'{print $2}\' | cut -f1  -d\'/\')\"');
+  console.log(execSync('printenv'));
+  address = process.env.IP;
 }
 var frontend = spawn("ionic", [ "serve", "-b", "--address", address, "--port", port], {'cwd': 'ionic/todo'});
 frontend.stdout.on('data', function(data) { console.log(""+data); });
