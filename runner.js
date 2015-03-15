@@ -1,6 +1,6 @@
 var sys = require('sys')
 var spawn = require('child_process').spawn;
-var execSync = require('child_process').execSync;
+var exec = require('child_process').exec;
 
 
 var fs = require('fs');
@@ -24,11 +24,9 @@ backend.stdout.on('data', function(data) { console.log(""+data); });
 var port = (process.env.PORT || 8100);
 var address = "localhost";
 if (port !== 8100) {
-  execSync('export IP=\"$(ip addr | grep \'state UP\' -A2 | tail -n1 | awk \'{print $2}\' | cut -f1  -d\'/\')\"');
-  console.log(execSync('printenv'));
-  address = process.env.IP;
+  address = "$(ip addr | grep \'state UP\' -A2 | tail -n1 | awk \'{print $2}\' | cut -f1  -d\'/\')";
 }
-var frontend = spawn("ionic", [ "serve", "-b", "--address", address, "--port", port], {'cwd': 'ionic/todo'});
+var frontend = exec("ionic serve -b --address "+address+" --port "+port, {'cwd': 'ionic/todo'});
 frontend.stdout.on('data', function(data) { console.log(""+data); });
 
 var gulp = spawn("gulp", ["watch", "--cwd","ionic/todo"]);
