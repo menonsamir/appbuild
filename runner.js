@@ -1,5 +1,7 @@
 var sys = require('sys')
 var spawn = require('child_process').spawn;
+var execSync = require('child_process').execSync;
+
 
 var fs = require('fs');
 
@@ -19,11 +21,13 @@ app.use(express.static(__dirname + '/public'));
 var backend = spawn("node", ["backend.js"]);
 backend.stdout.on('data', function(data) { console.log(""+data); });
 
-var port = process.env.PORT;
-var address = "$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')";
-console.log("../../node_modules/ionic/bin/ionic serve -b --port " + port + " --address " + address)
-  var frontend = spawn("ionic", ["serve", "-b", "--port", port, "--address", " $(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')"], {'cwd': 'ionic/todo'});
-//var frontend = spawn("../../node_modules/ionic/bin/ionic", ["serve", "-b", "--port", port, "--address", address], {'cwd': 'ionic/todo'});
+var port = (process.env.PORT || 8100);
+var address = "localhost";
+if (port !== 8100) {
+  address = process.env.IP;
+  execSync('export IP=\"$(ip addr | grep \'state UP\' -A2 | tail -n1 | awk \'{print $2}\' | cut -f1  -d\'/\')\"');
+}
+var frontend = spawn("ionic", [ "serve", "-b", "--address", address, "--port", port], {'cwd': 'ionic/todo'});
 frontend.stdout.on('data', function(data) { console.log(""+data); });
 
 var gulp = spawn("gulp", ["watch", "--cwd","ionic/todo"]);
