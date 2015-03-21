@@ -57,7 +57,7 @@ app.get('/reset', function (req, res) {
   });
 });
 
-app.post('/edit', function (req, res) {
+app.post('/', function (req, res) {
   console.log(req.body);
   fs.writeFile('objects.yaml', req.body.objects, function (err) {
     fs.writeFile('routes.yaml', req.body.routes, function (err) {
