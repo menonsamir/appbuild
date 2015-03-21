@@ -12,17 +12,15 @@ try {
 console.log(process.env.DATABASE_SECURE == "false" ? false : true)
 
 var Sequelize = require('sequelize');
-
-var match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
-console.log(process.env.DATABASE_URL);
-var sequelize = new Sequelize(process.env.DATABASE_URL);
+var sequelize = new Sequelize((process.env.DATABASE_URL || "mysql://root@localhost:3306/main"));
 
 var objs_spec = yaml.safeLoad(fs.readFileSync('./objects.yaml', 'utf8'));
 var type_mapper = {
   'text': 'STRING',
   'choice': 'ENUM',
   'string': 'STRING',
-  'enum': 'ENUM'
+  'enum': 'ENUM',
+  'date': 'DATE'
 }
 
 var relationships = [];

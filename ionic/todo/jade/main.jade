@@ -11,7 +11,7 @@ include ./blocks.jade
       +form-button("login()") Login
   .card
     .item
-        em Don't have an account?
+        em No account?
         button.button.button-block(ui-sref="signup") Sign Up!
 
 +view("signup", "Sign Up")
@@ -22,16 +22,39 @@ include ./blocks.jade
       input(type="password" placeholder="Password" ng-model="user.password")
     +form-input('Name')
       input(type="text" placeholder="Display Name" ng-model="user.name")
+    +form-input('Description')
+      input(type="text" placeholder="Description..." ng-model="user.description")
     +form-input('Gender').item-select
       select(ng-model="user.gender")
         option(value="male") Male
         option(value="female") Female
         option(value="other") Other
+    +form-input('Birthday')
+      input(type="date" ng-model="user.birthday")
     +form-button('signup()') Sign Up
 
 +tabs
   +tab('hugs', 'ion-heart')
   +tab('users', 'ion-person')
+  +tab('about', 'ion-search')
+  +tab('posts', 'ion-search')
+  
++view("about", 'About')
+  h2 Who cares?
+  p We want build cool things!
+  +form(ng-init="post = {}")
+    +form-input('Title')
+      input(type="text" placeholder="Short and informative." ng-model="post.title")
+    +form-input('Link')
+      input(type="text" placeholder="Link to content." ng-model="post.link")
+    +form-button("create(post)") Post!
+    
++view("posts", 'Posts')
+  h2 Who cares?
+  p We want build cool things!
+  +list
+    +item(ng-repeat="post in data")
+      a(href="{{post.link}}") {{post.title}}
 
 +view("hugs","Get Hugs!")
   +list
@@ -46,8 +69,11 @@ include ./blocks.jade
       p {{user.gender}}
 
 +view("user","{{obj.name}}")
+  h2 {{obj.name}} / {{obj.gender}}
+  p {{obj.description}}
+  p {{obj.birthday}}
   +form(ng-if="!created" ng-init="hug.recipientId = userId")
     +form-input("Hug")
-      input(type="text" placeholder="You're wonderful." ng-model="hug.message")
+      input(type="text" placeholder="You are wonderful." ng-model="hug.message")
     +form-button("create(hug)") Hug!
   p(ng-if="created") You hugged!  :D

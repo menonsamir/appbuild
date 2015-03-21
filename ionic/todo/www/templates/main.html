@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="card">
-        <div class="item"><em>Don't have an account?</em>
+        <div class="item"><em>No account?</em>
           <button ui-sref="signup" class="button button-block">Sign Up!</button>
         </div>
       </div>
@@ -39,12 +39,18 @@
         <label class="item item-input"><span class="input-label">Name</span>
           <input type="text" placeholder="Display Name" ng-model="user.name"/>
         </label>
+        <label class="item item-input"><span class="input-label">Description</span>
+          <input type="text" placeholder="Description..." ng-model="user.description"/>
+        </label>
         <label class="item item-input"><span class="input-label">Gender</span>
           <select ng-model="user.gender">
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
+        </label>
+        <label class="item item-input"><span class="input-label">Birthday</span>
+          <input type="date" ng-model="user.birthday"/>
         </label>
         <div class="item">
           <button ng-click="signup()" class="button button-block button-positive">Sign Up
@@ -62,7 +68,47 @@
     <ion-tab title="Users" icon="ion-person" ui-sref="tabs.users">
       <ion-nav-view name="users-tab"></ion-nav-view>
     </ion-tab>
+    <ion-tab title="About" icon="ion-search" ui-sref="tabs.about">
+      <ion-nav-view name="about-tab"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="Posts" icon="ion-search" ui-sref="tabs.posts">
+      <ion-nav-view name="posts-tab"></ion-nav-view>
+    </ion-tab>
   </ion-tabs>
+</script>
+<script type="text/ng-template" id="about.html">
+  <ion-view title="About">
+    <ion-content padding="true">
+      <h2>Who cares?</h2>
+      <p>We want build cool things!</p>
+      <div class="list" ng-init="post = {}">
+        <label ng-if="message" class="item assertive text-center">{{message}}</label>
+        <label class="item item-input"><span class="input-label">Title</span>
+          <input type="text" placeholder="Short and informative." ng-model="post.title"/>
+        </label>
+        <label class="item item-input"><span class="input-label">Link</span>
+          <input type="text" placeholder="Link to content." ng-model="post.link"/>
+        </label>
+        <div class="item">
+          <button ng-click="create(post)" class="button button-block button-positive">Post!
+          </button>
+        </div>
+      </div>
+    </ion-content>
+  </ion-view>
+</script>
+<script type="text/ng-template" id="posts.html">
+  <ion-view title="Posts">
+    <ion-content padding="true">
+      <h2>Who cares?</h2>
+      <p>We want build cool things!</p>
+      <ion-refresher pulling-text="Pull to refresh..." on-refresh="list()"></ion-refresher>
+      <ion-list>
+        <ion-item ng-repeat="post in data"><a href="{{post.link}}">{{post.title}}</a>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-view>
 </script>
 <script type="text/ng-template" id="hugs.html">
   <ion-view title="Get Hugs!">
@@ -93,10 +139,13 @@
 <script type="text/ng-template" id="user.html">
   <ion-view title="{{obj.name}}">
     <ion-content padding="true">
+      <h2>{{obj.name}} / {{obj.gender}}</h2>
+      <p>{{obj.description}}</p>
+      <p>{{obj.birthday}}</p>
       <div class="list" ng-if="!created" ng-init="hug.recipientId = userId">
         <label ng-if="message" class="item assertive text-center">{{message}}</label>
         <label class="item item-input"><span class="input-label">Hug</span>
-          <input type="text" placeholder="You're wonderful." ng-model="hug.message"/>
+          <input type="text" placeholder="You are wonderful." ng-model="hug.message"/>
         </label>
         <div class="item">
           <button ng-click="create(hug)" class="button button-block button-positive">Hug!

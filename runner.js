@@ -26,13 +26,13 @@ var address = "localhost";
 if (port !== 8100) {
   address = "$(ip addr | grep \'state UP\' -A2 | tail -n1 | awk \'{print $2}\' | cut -f1  -d\'/\')";
 }
-var frontend = exec("ionic serve -b --address "+address+" --port "+port, {'cwd': 'ionic/todo'});
+var frontend = exec("ionic serve", {'cwd': 'ionic/todo'});// --address "+address+" --port "+port, {'cwd': 'ionic/todo'});
 frontend.stdout.on('data', function(data) { console.log(""+data); });
 
 var gulp = spawn("gulp", ["watch", "--cwd","ionic/todo"]);
 gulp.stdout.on('data', function(data) { console.log(""+data); });
 
-app.get('/', function (req, res) {
+app.get('/edit', function (req, res) {
   fs.readFile('objects.yaml', {encoding: 'utf8'}, function (err, objects) {
     fs.readFile('routes.yaml', {encoding: 'utf8'}, function (err, routes) {
       fs.readFile('ionic/todo/jade/main.jade', {encoding: 'utf8'}, function (err, views) {
@@ -57,7 +57,7 @@ app.get('/reset', function (req, res) {
   });
 });
 
-app.post('/', function (req, res) {
+app.post('/edit', function (req, res) {
   console.log(req.body);
   fs.writeFile('objects.yaml', req.body.objects, function (err) {
     fs.writeFile('routes.yaml', req.body.routes, function (err) {

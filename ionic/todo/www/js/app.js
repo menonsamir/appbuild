@@ -1,9 +1,8 @@
-var objects = ['Hug', 'User'];
+var objects = ['Hug', 'User', 'Post'];
 var root = window.location.protocol + '//' + window.location.hostname + ":3400";
 var apiroot = root+'/api/';
 
 var actions = {};
-var tabs = {'hugs': 'basic', 'users':'list'};
 
 $.get('actions.yaml', function(data) {
   actions = jsyaml.load(data);
@@ -196,7 +195,8 @@ function makeDetailState(n) {
 app.config(function($stateProvider, $urlRouterProvider, $injector) {
   $urlRouterProvider.otherwise('/login')
   console.log(actions);
-  /*tabs = {}
+  
+  tabs = {}
   for (var url in actions) {
     var tabname = url.split('.')[1];
     var isList = url.split('.')[2] === 'detail';
@@ -205,9 +205,8 @@ app.config(function($stateProvider, $urlRouterProvider, $injector) {
     } else {
       tabs[tabname] = 'basic'
     }
-  }*/
-
-  tabs = {'hugs': 'basic', 'users':'list'}
+  }
+  console.log(actions);
   console.log(tabs);
   $stateProvider.state('login', makeBasicState('login'));
   $stateProvider.state('signup', makeBasicState('signup'));

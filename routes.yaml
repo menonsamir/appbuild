@@ -1,6 +1,6 @@
 User:
   read:
-    attributes: [name, gender]
+    attributes: [name, gender, description, birthday]
   list:
     attributes: [name, gender]
 Hug:
@@ -20,5 +20,20 @@ Hug:
       recipient: me
     include:
       - as: sender
+        model: User
+        attributes: [name, gender]
+Post:
+  create:
+    before:
+      set:
+        author: me
+  read:
+    include:
+      - as: author
+        model: User
+        attributes: [name, gender]
+  list:
+    include:
+      - as: author
         model: User
         attributes: [name, gender]
