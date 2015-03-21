@@ -32,7 +32,7 @@ frontend.stdout.on('data', function(data) { console.log(""+data); });
 var gulp = spawn("gulp", ["watch", "--cwd","ionic/todo"]);
 gulp.stdout.on('data', function(data) { console.log(""+data); });
 
-app.get('/edit', function (req, res) {
+app.get('/', function (req, res) {
   fs.readFile('objects.yaml', {encoding: 'utf8'}, function (err, objects) {
     fs.readFile('routes.yaml', {encoding: 'utf8'}, function (err, routes) {
       fs.readFile('ionic/todo/jade/main.jade', {encoding: 'utf8'}, function (err, views) {
