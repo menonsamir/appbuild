@@ -3,25 +3,6 @@ User:
     attributes: [name, gender, description, birthday]
   list:
     attributes: [name, gender]
-Hug:
-  create:
-    before:
-      set:
-        sender: me
-  read:
-    where:
-      recipient: me
-    include:
-      - as: sender
-        model: User
-        attributes: [name, gender]
-  list:
-    where:
-      recipient: me
-    include:
-      - as: sender
-        model: User
-        attributes: [name, gender]
 Post:
   create:
     before:

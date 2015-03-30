@@ -1,14 +1,14 @@
 include ./blocks.jade
 
-+view("login", "Huggly")
-  h2 Fun internet hugs!
++view("login", "MessageBoard")
+  h2 A simple message board, similar to Reddit!
   p Test credentials: joe@gmail.com, password: foobarfoo
   +form.card
       +form-input
         input(type="email" placeholder="Email" ng-model="user.email")
       +form-input
         input(type="password" placeholder="Password" ng-model="user.password")
-      +form-button("login()") Login
+      +form-button("login('tabs.posts.index')") Login
   .card
     .item
         em No account?
@@ -29,40 +29,31 @@ include ./blocks.jade
         option(value="male") Male
         option(value="female") Female
         option(value="other") Other
-    +form-input('Birthday')
-      input(type="date" ng-model="user.birthday")
-    +form-button('signup()') Sign Up
+    +form-button("signup('tabs.posts.index')") Sign Up
 
 +tabs
-  +tab('hugs', 'ion-heart')
+  +tab('posts', 'ion-arrow-graph-up-right')
+  +tab('submit', 'ion-plus')
   +tab('users', 'ion-person')
-  +tab('about', 'ion-search')
-  +tab('posts', 'ion-search')
   
-+view("about", 'About')
-  h2 Who cares?
-  p We want build cool things!
-  +form(ng-init="post = {}")
++view("submit", 'Submit')
+  h2 Submit a new post
+  p Show us something interesting!
+  +form(ng-init="post = {}" ng-if="!created")
     +form-input('Title')
       input(type="text" placeholder="Short and informative." ng-model="post.title")
     +form-input('Link')
       input(type="text" placeholder="Link to content." ng-model="post.link")
     +form-button("create(post)") Post!
+  p(ng-if="created") Your post, "{{created.title}}" was made!
     
 +view("posts", 'Posts')
-  h2 Who cares?
-  p We want build cool things!
+  h2 The best posts!
   +list
     +item(ng-repeat="post in data")
       a(href="{{post.link}}") {{post.title}}
 
-+view("hugs","Get Hugs!")
-  +list
-    +item(ng-repeat="hug in data")
-      h2 {{hug.sender.name}} / {{hug.sender.gender}}
-      p {{hug.message}}
-
-+view("users","Give Hugs!")
++view("users","Users")
   +list
     +item(ng-repeat="user in data" ui-sref="tabs.users.detail({userId: user.id})")
       h2 {{user.name}}
@@ -71,9 +62,3 @@ include ./blocks.jade
 +view("user","{{obj.name}}")
   h2 {{obj.name}} / {{obj.gender}}
   p {{obj.description}}
-  p {{obj.birthday}}
-  +form(ng-if="!created" ng-init="hug.recipientId = userId")
-    +form-input("Hug")
-      input(type="text" placeholder="You are wonderful." ng-model="hug.message")
-    +form-button("create(hug)") Hug!
-  p(ng-if="created") You hugged!  :D

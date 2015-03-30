@@ -1,11 +1,30 @@
-var objects = ['Hug', 'User', 'Post'];
+var objects = [];
 var root = window.location.protocol + '//' + window.location.hostname + ":3400";
 var apiroot = root+'/api/';
 
 var actions = {};
 
+var app = angular.module('starter', ['ionic', 'ngResource']);
+
 $.get('actions.yaml', function(data) {
   actions = jsyaml.load(data);
+  for (var loc in actions) {
+    for (var i = 0; i<actions[loc].length; i++) {
+      var o = actions[loc][i]['type'];
+      if (objects.indexOf(o) === -1) {
+        objects.push(o);
+      }
+    }
+  }
+  for (var i = 0; i<objects.length; i++) {
+    var obj = objects[i];
+    console.log(obj.toLowerCase().pluralize()+'/:id')
+    app.factory(obj, (function (obj) {
+      return function($resource) {
+        return $resource(apiroot+obj.toLowerCase().pluralize()+'/:id');
+      }
+    })(obj))
+  }
   console.log(actions)
   for (var url in actions) {
     var ctrlName = capitalizeFirstLetter(url.split(".")[1]);
@@ -46,14 +65,6 @@ $.get('actions.yaml', function(data) {
 
 
 */
-
-
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-var app = angular.module('starter', ['ionic', 'ngResource']);
 
 // HACK: we ask for $injector instead of $compile, to avoid circular dep
 app.factory('$templateCache', function($cacheFactory, $http, $injector) {
@@ -114,17 +125,6 @@ save    CREATE
 "put"   UPDATE
 delete  DELETE
 */
-
-for (var i = 0; i<objects.length; i++) {
-  var obj = objects[i];
-  console.log(obj.toLowerCase().pluralize()+'/:id')
-  app.factory(obj, (function (obj) {
-    return function($resource) {
-      return $resource(apiroot+obj.toLowerCase().pluralize()+'/:id');
-    }
-  })(obj))
-}
-
 function makeBasicState(n) {
   var o  = {
     url: '/'+n,
@@ -239,12 +239,12 @@ app.config(function($stateProvider, $urlRouterProvider, $injector) {
 
 app.controller('LoginCtrl', function($scope, $http, $window, $state) {
   $scope.user = {email: '', password: ''};
-  $scope.login = function() {
+  $scope.login = function (state) {
     $http
           .post(root+'/authenticate', $scope.user)
           .success(function (data, status, headers, config) {
             $window.sessionStorage.token = data.token;
-            $state.go('tabs.hugs');
+            $state.go(state);
           })
           .error(function (data, status, headers, config) {
             // Erase the token if the user fails to log in
@@ -258,13 +258,13 @@ app.controller('LoginCtrl', function($scope, $http, $window, $state) {
 
 app.controller('SignupCtrl', function($scope, $http, $window, $state) {
   $scope.user = {};
-  $scope.signup = function() {
+  $scope.signup = function(state) {
     console.log($scope);
     $http
           .post(root+'/register', $scope.user)
           .success(function (data, status, headers, config) {
             $window.sessionStorage.token = data.token;
-            $state.go('tabs.hugs');
+            $state.go(state);
           })
           .error(function (data, status, headers, config) {
             // Erase the token if the user fails to log in

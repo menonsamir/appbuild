@@ -1,8 +1,8 @@
 
 <script type="text/ng-template" id="login.html">
-  <ion-view title="Huggly">
+  <ion-view title="MessageBoard">
     <ion-content padding="true">
-      <h2>Fun internet hugs!</h2>
+      <h2>A simple message board, similar to Reddit!</h2>
       <p>Test credentials: joe@gmail.com, password: foobarfoo</p>
       <div class="list card">
         <label ng-if="message" class="item assertive text-center">{{message}}</label>
@@ -13,7 +13,7 @@
           <input type="password" placeholder="Password" ng-model="user.password"/>
         </label>
         <div class="item">
-          <button ng-click="login()" class="button button-block button-positive">Login
+          <button ng-click="login('tabs.posts.index')" class="button button-block button-positive">Login
           </button>
         </div>
       </div>
@@ -49,11 +49,8 @@
             <option value="other">Other</option>
           </select>
         </label>
-        <label class="item item-input"><span class="input-label">Birthday</span>
-          <input type="date" ng-model="user.birthday"/>
-        </label>
         <div class="item">
-          <button ng-click="signup()" class="button button-block button-positive">Sign Up
+          <button ng-click="signup('tabs.posts.index')" class="button button-block button-positive">Sign Up
           </button>
         </div>
       </div>
@@ -62,26 +59,23 @@
 </script>
 <script type="text/ng-template" id="tabs.html">
   <ion-tabs class="tabs-icon-top tabs-positive">
-    <ion-tab title="Hugs" icon="ion-heart" ui-sref="tabs.hugs">
-      <ion-nav-view name="hugs-tab"></ion-nav-view>
+    <ion-tab title="Posts" icon="ion-arrow-graph-up-right" ui-sref="tabs.posts">
+      <ion-nav-view name="posts-tab"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="Submit" icon="ion-plus" ui-sref="tabs.submit">
+      <ion-nav-view name="submit-tab"></ion-nav-view>
     </ion-tab>
     <ion-tab title="Users" icon="ion-person" ui-sref="tabs.users">
       <ion-nav-view name="users-tab"></ion-nav-view>
     </ion-tab>
-    <ion-tab title="About" icon="ion-search" ui-sref="tabs.about">
-      <ion-nav-view name="about-tab"></ion-nav-view>
-    </ion-tab>
-    <ion-tab title="Posts" icon="ion-search" ui-sref="tabs.posts">
-      <ion-nav-view name="posts-tab"></ion-nav-view>
-    </ion-tab>
   </ion-tabs>
 </script>
-<script type="text/ng-template" id="about.html">
-  <ion-view title="About">
+<script type="text/ng-template" id="submit.html">
+  <ion-view title="Submit">
     <ion-content padding="true">
-      <h2>Who cares?</h2>
-      <p>We want build cool things!</p>
-      <div class="list" ng-init="post = {}">
+      <h2>Submit a new post</h2>
+      <p>Show us something interesting!</p>
+      <div class="list" ng-init="post = {}" ng-if="!created">
         <label ng-if="message" class="item assertive text-center">{{message}}</label>
         <label class="item item-input"><span class="input-label">Title</span>
           <input type="text" placeholder="Short and informative." ng-model="post.title"/>
@@ -94,14 +88,14 @@
           </button>
         </div>
       </div>
+      <p ng-if="created">Your post, "{{created.title}}" was made!</p>
     </ion-content>
   </ion-view>
 </script>
 <script type="text/ng-template" id="posts.html">
   <ion-view title="Posts">
     <ion-content padding="true">
-      <h2>Who cares?</h2>
-      <p>We want build cool things!</p>
+      <h2>The best posts!</h2>
       <ion-refresher pulling-text="Pull to refresh..." on-refresh="list()"></ion-refresher>
       <ion-list>
         <ion-item ng-repeat="post in data"><a href="{{post.link}}">{{post.title}}</a>
@@ -110,21 +104,8 @@
     </ion-content>
   </ion-view>
 </script>
-<script type="text/ng-template" id="hugs.html">
-  <ion-view title="Get Hugs!">
-    <ion-content padding="true">
-      <ion-refresher pulling-text="Pull to refresh..." on-refresh="list()"></ion-refresher>
-      <ion-list>
-        <ion-item ng-repeat="hug in data">
-          <h2>{{hug.sender.name}} / {{hug.sender.gender}}</h2>
-          <p>{{hug.message}}</p>
-        </ion-item>
-      </ion-list>
-    </ion-content>
-  </ion-view>
-</script>
 <script type="text/ng-template" id="users.html">
-  <ion-view title="Give Hugs!">
+  <ion-view title="Users">
     <ion-content padding="true">
       <ion-refresher pulling-text="Pull to refresh..." on-refresh="list()"></ion-refresher>
       <ion-list>
@@ -141,18 +122,6 @@
     <ion-content padding="true">
       <h2>{{obj.name}} / {{obj.gender}}</h2>
       <p>{{obj.description}}</p>
-      <p>{{obj.birthday}}</p>
-      <div class="list" ng-if="!created" ng-init="hug.recipientId = userId">
-        <label ng-if="message" class="item assertive text-center">{{message}}</label>
-        <label class="item item-input"><span class="input-label">Hug</span>
-          <input type="text" placeholder="You are wonderful." ng-model="hug.message"/>
-        </label>
-        <div class="item">
-          <button ng-click="create(hug)" class="button button-block button-positive">Hug!
-          </button>
-        </div>
-      </div>
-      <p ng-if="created">You hugged!  :D</p>
     </ion-content>
   </ion-view>
 </script>

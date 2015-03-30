@@ -16,17 +16,6 @@ User:
   gender:
     type: choice
     values: [male, female, other]
-  birthday:
-    type: date
-Hug:
-  message:
-    type: text
-    validate:
-      len: [1,160]
-  sender:
-    type: User
-  recipient:
-    type: User
 Post:
   title:
     type: text
